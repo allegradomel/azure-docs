@@ -92,6 +92,22 @@ You can specify the following next hop types when creating a user-defined route:
 
 You cannot specify **VNet peering** or **VirtualNetworkServiceEndpoint** as the next hop type in user-defined routes. Routes with the **VNet peering** or **VirtualNetworkServiceEndpoint** next hop types are only created by Azure, when you configure a virtual network peering, or a service endpoint.
 
+### Service Tags for user-defined routes (Public Preview)
+
+You can now specify a [Service Tag](./service-tags-overview) as the address prefix for a user-defined route instead of an explicit IP range. A Service Tag represents a group of IP address prefixes from a given Azure service. Microsoft manages the address prefixes encompassed by the service tag and automatically updates the service tag as addresses change, minimizing the complexity of frequent updates to user-defined routes and reducing the number of routes you need to create.</br>
+
+When there is overlap between the IP's in a route with an explicit IP prefix and a route with a Service Tag, preference is given to the route with the explicit prefix. When multiple routes with Service Tags have overlapping IP prefixes, routes will be evaluated in the following order: 
+
+   1. Regional tags (eg. Storage.EastUS, AppService.AustraliaCentral)
+   2. Top level tags (eg. Storage, AppService)
+   3. AzureCloud regional tags (eg. AzureCloud.canadacentral, AzureCloud.eastasia)
+   4. The AzureCloud tag
+
+
+> [!NOTE] 
+> While in Public Preview, there are several limitations. The feature is not currently supported in the Azure Portal and is only available through Powershell and CLI. There is no support for use with containers. 
+
+
 ## Next hop types across Azure tools
 
 The name displayed and referenced for next hop types is different between the Azure portal and command-line tools, and the Azure Resource Manager and classic deployment models. The following table lists the names used to refer to each next hop type with the different tools and [deployment models](../azure-resource-manager/management/deployment-models.md?toc=%2fazure%2fvirtual-network%2ftoc.json):
